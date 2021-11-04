@@ -59,12 +59,36 @@ namespace DotnetCatalog.Controllers
 
       repository.CreateItem(item);
 
-      // retorna um header com a localização na api do retorno
-      //    201
-      //    Header
+      // Convenção
+      //  => retornar Created (201)
+      //  => retornar um header com a localização na api do retorno
       //                          host          rota get      id
       //      location: https://localhost:5001/Items/b5c8f35d-e715-40f3-9182-3ca0e227a7a5
       return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult UpdateItem(Guid id, UpdateItemDto itemDto)
+    {
+      var existingItem = repository.GetItem(id);
+
+      if (existingItem is null)
+      {
+        return NotFound();
+      }
+
+      // record type with-expression
+      // preserva mutabilidade
+      Item updatedItem = existingItem with
+      {
+        Name = itemDto.Name,
+        Price = itemDto.Price
+      };
+
+      repository.UpdateItem(updatedItem);
+
+      // Convenção => retornar NoContent (204)
+      return NoContent();
     }
   }
 }
