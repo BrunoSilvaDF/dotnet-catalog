@@ -90,5 +90,21 @@ namespace DotnetCatalog.Controllers
       // Convenção => retornar NoContent (204)
       return NoContent();
     }
+
+    [HttpDelete]
+    public ActionResult DeleteItem(Guid id)
+    {
+      var existingItem = repository.GetItem(id);
+
+      if (existingItem is null)
+      {
+        return NotFound();
+      }
+
+      repository.DeleteItem(id);
+
+      // Convenção => retornar NoContent (204)
+      return NoContent();
+    }
   }
 }
