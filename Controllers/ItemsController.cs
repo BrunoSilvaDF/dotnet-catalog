@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DotnetCatalog.Dtos;
 using DotnetCatalog.Entitites;
 using DotnetCatalog.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +20,21 @@ namespace DotnetCatalog.Controllers
     }
 
     [HttpGet]
-    public IEnumerable<Item> GetItems()
+    public IEnumerable<ItemDto> GetItems()
     {
-      return repository.GetItems();
+      // before extension method
+      // return repository.GetItems().Select(item => new ItemDto
+      // {
+      //   Id = item.Id,
+      //   Name = item.Name,
+      //   Price = item.Price,
+      //   CreatedAt = item.CreatedAt
+      // });
+      return repository.GetItems().Select(item => item.AsDto());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Item> GetItem(Guid id)
+    public ActionResult<ItemDto> GetItem(Guid id)
     {
       var item = repository.GetItem(id);
 
@@ -33,7 +43,7 @@ namespace DotnetCatalog.Controllers
         return NotFound();
       }
 
-      return item;
+      return item.AsDto();
     }
   }
 }
