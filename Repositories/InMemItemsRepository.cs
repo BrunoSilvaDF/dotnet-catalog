@@ -5,7 +5,7 @@ using DotnetCatalog.Entitites;
 
 namespace DotnetCatalog.Repositories
 {
-  public class InMemItemsRepository
+  public class InMemItemsRepository : IItemsRepository
   {
     // target-typed new item
     private readonly List<Item> items = new()

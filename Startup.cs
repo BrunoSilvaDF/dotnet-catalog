@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotnetCatalog.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,8 +25,11 @@ namespace DotnetCatalog
     public IConfiguration Configuration { get; }
 
     // Services registration
+    //  Dependency injection
     public void ConfigureServices(IServiceCollection services)
     {
+      // registering an instance (singleton) of repo
+      services.AddSingleton<IItemsRepository, InMemItemsRepository>();
 
       services.AddControllers();
       services.AddSwaggerGen(c =>
