@@ -29,6 +29,7 @@ namespace DotnetCatalog
     public void ConfigureServices(IServiceCollection services)
     {
       // registering an instance (singleton) of repo
+      //  => nesse caso, o ItemsRepo vai receber uma instância do InMemoryItemsRepo
       services.AddSingleton<IItemsRepository, InMemItemsRepository>();
 
       services.AddControllers();
