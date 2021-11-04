@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
-namespace dotnet_catalog
+namespace DotnetCatalog
 {
   public class Startup
   {
@@ -30,7 +30,7 @@ namespace dotnet_catalog
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "dotnet_catalog", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotnetCatalog", Version = "v1" });
       });
     }
 
@@ -41,7 +41,7 @@ namespace dotnet_catalog
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet_catalog v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DotnetCatalog v1"));
       }
 
       app.UseHttpsRedirection();
