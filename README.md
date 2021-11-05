@@ -1,3 +1,3 @@
 # Course Status
 
-https://youtu.be/ZXdFisA_hOY?t=4847
+https://youtu.be/ZXdFisA_hOY?t=6771
