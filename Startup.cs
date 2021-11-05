@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotnetCatalog.Repositories;
+using DotnetCatalog.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 
 namespace DotnetCatalog
 {
@@ -28,9 +33,26 @@ namespace DotnetCatalog
     //  Dependency injection
     public void ConfigureServices(IServiceCollection services)
     {
+      // corrigindo a representação dos dados serializados (Guid, DateTimeOffset)
+      BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+      BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
+
+      // registrando a conexão do MongoDB
+      services.AddSingleton<IMongoClient>(serviceProvider =>
+      {
+        var settings = Configuration
+          .GetSection(nameof(MongoDbSettings)) // captura a parte do appsettings
+          .Get<MongoDbSettings>();  // converte para a classe
+        return new MongoClient(settings.ConnectionString);
+      });
+
+      // registrando a instância do mongodb
+      services.AddSingleton<IItemsRepository, MongoDbItemsRepository>();
+
+
       // registering an instance (singleton) of repo
       //  => nesse caso, o ItemsRepo vai receber uma instância do InMemoryItemsRepo
-      services.AddSingleton<IItemsRepository, InMemItemsRepository>();
+      // services.AddSingleton<IItemsRepository, InMemItemsRepository>();
 
       services.AddControllers();
       services.AddSwaggerGen(c =>
