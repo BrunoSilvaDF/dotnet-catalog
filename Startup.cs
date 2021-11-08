@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
+using System.Text.Json;
 using System.Threading.Tasks;
 using DotnetCatalog.Repositories;
 using DotnetCatalog.Settings;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -37,13 +41,14 @@ namespace DotnetCatalog
       BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
       BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
+      var mongoDbSettings = Configuration
+        .GetSection(nameof(MongoDbSettings)) // captura a parte do appsettings
+        .Get<MongoDbSettings>();  // converte para a classe
+
       // registrando a conexão do MongoDB
       services.AddSingleton<IMongoClient>(serviceProvider =>
       {
-        var settings = Configuration
-          .GetSection(nameof(MongoDbSettings)) // captura a parte do appsettings
-          .Get<MongoDbSettings>();  // converte para a classe
-        return new MongoClient(settings.ConnectionString);
+        return new MongoClient(mongoDbSettings.ConnectionString);
       });
 
       // registrando a instância do mongodb
@@ -65,6 +70,15 @@ namespace DotnetCatalog
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotnetCatalog", Version = "v1" });
       });
+
+      // adiciona o serviço de Health Checks
+      services.AddHealthChecks()
+        .AddMongoDb(
+          mongoDbSettings.ConnectionString,
+          name: "mongodb",
+          timeout: TimeSpan.FromSeconds(3),     // tempo do timeout
+          tags: new[] { "ready" }               // adiciona uma tag
+        );
     }
 
     // Request handling pipeline configuration
@@ -86,6 +100,37 @@ namespace DotnetCatalog
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
+
+        // Configura o serviço de Health Checks
+        endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions
+        {
+          // verifica os serviços com a tag "ready"
+          Predicate = (check) => check.Tags.Contains("ready"),
+          // personaliza a resposta do serviço
+          ResponseWriter = async (context, report) =>
+          {
+            var result = JsonSerializer.Serialize(
+              new
+              {
+                status = report.Status.ToString(),
+                checks = report.Entries.Select(entry => new
+                {
+                  name = entry.Key,
+                  status = entry.Value.Status.ToString(),
+                  exception = entry.Value.Exception != null ? entry.Value.Exception.Message : "none",
+                  duration = entry.Value.Duration.ToString()
+                })
+              }
+            );
+            context.Response.ContentType = MediaTypeNames.Application.Json;
+            await context.Response.WriteAsync(result);
+          }
+        });
+        endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
+        {
+          // verifica o serviço geral
+          Predicate = (_) => false
+        });
       });
     }
   }
