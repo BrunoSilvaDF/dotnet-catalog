@@ -17,6 +17,7 @@ namespace DotnetCatalog
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
+        // injeta o SecretManager no pacote :)
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
