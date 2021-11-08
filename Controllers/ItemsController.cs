@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DotnetCatalog.Dtos;
 using DotnetCatalog.Entitites;
 using DotnetCatalog.Repositories;
@@ -20,7 +21,7 @@ namespace DotnetCatalog.Controllers
     }
 
     [HttpGet]
-    public IEnumerable<ItemDto> GetItems()
+    public async Task<IEnumerable<ItemDto>> GetItemsAsync()
     {
       // before extension method
       // return repository.GetItems().Select(item => new ItemDto
@@ -30,13 +31,13 @@ namespace DotnetCatalog.Controllers
       //   Price = item.Price,
       //   CreatedAt = item.CreatedAt
       // });
-      return repository.GetItems().Select(item => item.AsDto());
+      return (await repository.GetItemsAsync()).Select(item => item.AsDto());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ItemDto> GetItem(Guid id)
+    public async Task<ActionResult<ItemDto>> GetItemAsync(Guid id)
     {
-      var item = repository.GetItem(id);
+      var item = await repository.GetItemAsync(id);
 
       if (item is null)
       {
@@ -47,7 +48,7 @@ namespace DotnetCatalog.Controllers
     }
 
     [HttpPost]
-    public ActionResult<ItemDto> CreateItem(CreateItemDto itemDto)
+    public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateItemDto itemDto)
     {
       Item item = new()
       {
@@ -57,20 +58,20 @@ namespace DotnetCatalog.Controllers
         CreatedAt = DateTimeOffset.UtcNow
       };
 
-      repository.CreateItem(item);
+      await repository.CreateItemAsync(item);
 
       // Convenção
       //  => retornar Created (201)
       //  => retornar um header com a localização na api do retorno
       //                          host          rota get      id
       //      location: https://localhost:5001/Items/b5c8f35d-e715-40f3-9182-3ca0e227a7a5
-      return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
+      return CreatedAtAction(nameof(GetItemAsync), new { id = item.Id }, item.AsDto());
     }
 
     [HttpPut("{id}")]
-    public ActionResult UpdateItem(Guid id, UpdateItemDto itemDto)
+    public async Task<ActionResult> UpdateItemAsync(Guid id, UpdateItemDto itemDto)
     {
-      var existingItem = repository.GetItem(id);
+      var existingItem = await repository.GetItemAsync(id);
 
       if (existingItem is null)
       {
@@ -85,23 +86,23 @@ namespace DotnetCatalog.Controllers
         Price = itemDto.Price
       };
 
-      repository.UpdateItem(updatedItem);
+      await repository.UpdateItemAsync(updatedItem);
 
       // Convenção => retornar NoContent (204)
       return NoContent();
     }
 
     [HttpDelete]
-    public ActionResult DeleteItem(Guid id)
+    public async Task<ActionResult> DeleteItemAsync(Guid id)
     {
-      var existingItem = repository.GetItem(id);
+      var existingItem = repository.GetItemAsync(id);
 
       if (existingItem is null)
       {
         return NotFound();
       }
 
-      repository.DeleteItem(id);
+      await repository.DeleteItemAsync(id);
 
       // Convenção => retornar NoContent (204)
       return NoContent();

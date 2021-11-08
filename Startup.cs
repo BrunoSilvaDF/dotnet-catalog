@@ -54,7 +54,13 @@ namespace DotnetCatalog
       //  => nesse caso, o ItemsRepo vai receber uma instância do InMemoryItemsRepo
       // services.AddSingleton<IItemsRepository, InMemItemsRepository>();
 
-      services.AddControllers();
+      services.AddControllers(options =>
+      {
+        // em tempo de execução, o dotnet remove os sufixos ASYNC dos métodos
+        // o ideal é suprimir para termos diferenciação
+        options.SuppressAsyncSuffixInActionNames = false;
+      });
+
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotnetCatalog", Version = "v1" });
