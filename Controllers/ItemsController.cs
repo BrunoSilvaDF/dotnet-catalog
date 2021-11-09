@@ -6,6 +6,7 @@ using DotnetCatalog.Dtos;
 using DotnetCatalog.Entitites;
 using DotnetCatalog.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace DotnetCatalog.Controllers
 {
@@ -14,10 +15,12 @@ namespace DotnetCatalog.Controllers
   public class ItemsController : ControllerBase
   {
     private readonly IItemsRepository repository;
+    private readonly ILogger<ItemsController> logger;
 
-    public ItemsController(IItemsRepository repository)
+    public ItemsController(IItemsRepository repository, ILogger<ItemsController> logger)
     {
       this.repository = repository;
+      this.logger = logger;
     }
 
     [HttpGet]
@@ -31,7 +34,11 @@ namespace DotnetCatalog.Controllers
       //   Price = item.Price,
       //   CreatedAt = item.CreatedAt
       // });
-      return (await repository.GetItemsAsync()).Select(item => item.AsDto());
+      var items = (await repository.GetItemsAsync()).Select(item => item.AsDto());
+
+      logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {items.Count()} items");
+
+      return items;
     }
 
     [HttpGet("{id}")]
