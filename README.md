@@ -14,6 +14,7 @@ https://youtu.be/ZXdFisA_hOY?t=17172
 `kubectl get deployments` :: get kubernetes
 `kubectl get pods` :: get pods
 `kubectl get statefulsets` :: get statefulsets
+`kubectl scale deployments/catalog-deployment --replicas=3` :: escalar
 
 ### Health Checks
 
