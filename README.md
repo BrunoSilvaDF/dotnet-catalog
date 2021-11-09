@@ -1,6 +1,6 @@
 # Course Status
 
-https://youtu.be/ZXdFisA_hOY?t=17172
+https://youtu.be/ZXdFisA_hOY?t=17784
 
 ### Tips
 
