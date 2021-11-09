@@ -4,6 +4,7 @@ https://youtu.be/ZXdFisA_hOY?t=10845
 
 ### Tips
 
+`dotnet dev-certs https --trust` :: adiciona certificado https
 `dotnet user-secrets init` :: inicia o .NET SecretManager, criando um Id no .csproj
 
 ### Health Checks

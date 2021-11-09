@@ -11,3 +11,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: Pass#word
+  api:
+    container_name: api-container
+    build: .
+    ports:
+      - '4000:80'
+    links:
+      - mongodb
+    environment:
+      MongoDbSettings:Host: mongodb
+      MongoDbSettings:Password: Pass#word
