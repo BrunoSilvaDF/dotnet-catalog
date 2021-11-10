@@ -4,6 +4,8 @@ https://youtu.be/ZXdFisA_hOY?t=17784
 
 ### Tips
 
+``:: criando o projeto`dotnet new xunit -n Catalog.UnitTests` :: criando o projeto de teste
+
 `dotnet dev-certs https --trust` :: adiciona certificado https
 `dotnet user-secrets init` :: inicia o .NET SecretManager, criando um Id no .csproj
 
