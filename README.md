@@ -30,6 +30,7 @@ xUnit
 `dotnet add package Microsoft.Extensions.Loggin.Abstractions` abstrai a parte de log
 `dotnet add package moq` pacote para mock
 `dotnet test` executa os testes
+extensão .net core test explorer para visualizar melhor os testes
 
 ### SecretManager
 
