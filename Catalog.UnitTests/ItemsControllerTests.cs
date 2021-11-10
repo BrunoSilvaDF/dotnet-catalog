@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Catalog.API.Controllers;
+using Catalog.API.Dtos;
 using Catalog.API.Entitites;
 using Catalog.API.Repositories;
 using FluentAssertions;
@@ -80,6 +81,32 @@ namespace Catalog.UnitTests
       // Assert
       actualItems.Should()
         .BeEquivalentTo(expectedItems, options => options.ComparingByMembers<Item>());
+    }
+
+    [Fact]
+    public async Task CreateItemsAsync_WithItemToCreate_ReturnsCreatedItem()
+    {
+      // Arrange
+      var itemToCreate = new CreateItemDto()
+      {
+        Name = Guid.NewGuid().ToString(),
+        Price = rand.Next(1000)
+      };
+
+      var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
+
+      // Act
+      var result = await controller.CreateItemAsync(itemToCreate);
+
+      // Assert
+      var createdItem = result.Value;
+      itemToCreate.Should()
+        .BeEquivalentTo(
+          createdItem,
+          options => options.ComparingByMembers<ItemDto>().ExcludingMissingMembers()
+        );
+      createdItem.Id.Should().NotBeEmpty();
+      createdItem.CreatedAt.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromMilliseconds(1000));
     }
 
     private Item CreateRandomItem()
