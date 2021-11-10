@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Catalog.API.Controllers;
-using Catalog.API.Dtos;
 using Catalog.API.Entitites;
 using Catalog.API.Repositories;
 using FluentAssertions;
@@ -61,9 +60,26 @@ namespace Catalog.UnitTests
       // FluentAssertions lib
       //  quando usamos record (ao invés de class), esse sobrescreve o método Equals
       //  por isso precisamos passar o 2ndo param, para focar nas propriedades e não no Obj
-      result.Value
-        .Should()
+      result.Value.Should()
         .BeEquivalentTo(expectedItem, options => options.ComparingByMembers<Item>());
+    }
+
+    [Fact]
+    public async Task GetItemsAsync_WithExistingItems_ReturnsAllItems()
+    {
+      // Arrange
+      var expectedItems = new[] { CreateRandomItem(), CreateRandomItem(), CreateRandomItem(), };
+
+      repositoryStub.Setup(repo => repo.GetItemsAsync()).ReturnsAsync(expectedItems);
+
+      var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
+
+      // Act
+      var actualItems = await controller.GetItemsAsync();
+
+      // Assert
+      actualItems.Should()
+        .BeEquivalentTo(expectedItems, options => options.ComparingByMembers<Item>());
     }
 
     private Item CreateRandomItem()
