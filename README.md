@@ -4,7 +4,7 @@ https://youtu.be/ZXdFisA_hOY?t=17784
 
 ### Tips
 
-``:: criando o projeto`dotnet new xunit -n Catalog.UnitTests` :: criando o projeto de teste
+``:: criando o projeto
 
 `dotnet dev-certs https --trust` :: adiciona certificado https
 `dotnet user-secrets init` :: inicia o .NET SecretManager, criando um Id no .csproj
@@ -25,6 +25,10 @@ https://youtu.be/ZXdFisA_hOY?t=17784
 ### Unit Tests
 
 xUnit
+`dotnet new xunit -n Catalog.UnitTests` :: criando o projeto de teste
+`dotnet add reference ..\Catalog.API\Catalog.API.csproj` adiciona ref do projeto ao teste
+`dotnet add package Microsoft.Extensions.Loggin.Abstractions` abstrai a parte de log
+`dotnet add package moq` pacote para mock
 
 ### SecretManager
 
