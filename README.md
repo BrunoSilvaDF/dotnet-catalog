@@ -29,6 +29,7 @@ xUnit
 `dotnet add reference ..\Catalog.API\Catalog.API.csproj` adiciona ref do projeto ao teste
 `dotnet add package Microsoft.Extensions.Loggin.Abstractions` abstrai a parte de log
 `dotnet add package moq` pacote para mock
+`dotnet test` executa os testes
 
 ### SecretManager
 
