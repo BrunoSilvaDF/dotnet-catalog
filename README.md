@@ -31,6 +31,7 @@ xUnit
 `dotnet add package moq` pacote para mock
 `dotnet test` executa os testes
 extensão .net core test explorer para visualizar melhor os testes
+`dotnet add package FluentAssertions` lib para fazer os asserts de forma mais inteligente :)
 
 ### SecretManager
 
