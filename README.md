@@ -1,10 +1,10 @@
 # Course Status
 
-https://youtu.be/ZXdFisA_hOY?t=17784
+https://youtu.be/ZXdFisA_hOY?t=19856
 
 ### Tips
 
-``:: criando o projeto
+`dotnet new webapi -n Catalog`:: criando o projeto
 
 `dotnet dev-certs https --trust` :: adiciona certificado https
 `dotnet user-secrets init` :: inicia o .NET SecretManager, criando um Id no .csproj
