@@ -20,11 +20,17 @@ https://youtu.be/ZXdFisA_hOY?t=17784
 `kubectl scale deployments/catalog-deployment --replicas=3` :: escalar
 `kubectl logs <pod name> -f` :: ver log do pod
 
+### Unit Tests
+
+xUnit
+
+### SecretManager
+
+`dotnet user-secrets set MongoDbSettings:Password Pass#word` :: adiciona o segredo ao .NET SecretManager
+
 ### Health Checks
 
 https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
-
-`dotnet user-secrets set MongoDbSettings:Password Pass#word` :: adiciona o segredo ao .NET SecretManager
 
 => a chave é o nome que estiver no appsettings
 

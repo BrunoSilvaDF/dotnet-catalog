@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DotnetCatalog.Entitites;
+using Catalog.API.Entitites;
 
-namespace DotnetCatalog.Repositories
+namespace Catalog.API.Repositories
 {
   public interface IItemsRepository
   {

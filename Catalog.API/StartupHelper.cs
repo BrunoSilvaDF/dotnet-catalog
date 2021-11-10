@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotnetCatalog
+namespace Catalog.API
 {
   public static class StartupHelper
   {

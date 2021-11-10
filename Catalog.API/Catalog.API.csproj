@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>DotnetCatalog</RootNamespace>
+    <RootNamespace>Catalog.API</RootNamespace>
     <UserSecretsId>0127ab52-dd17-4079-a312-4694514a7420</UserSecretsId>
   </PropertyGroup>
 

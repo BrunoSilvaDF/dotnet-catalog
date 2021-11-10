@@ -7,7 +7,7 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/dotnet-catalog.csproj",
+        "${workspaceFolder}/Catalog.API/Catalog.API.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -23,7 +23,7 @@
       "type": "process",
       "args": [
         "publish",
-        "${workspaceFolder}/dotnet-catalog.csproj",
+        "${workspaceFolder}/Catalog.API/Catalog.API.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -36,7 +36,7 @@
       "args": [
         "watch",
         "run",
-        "${workspaceFolder}/dotnet-catalog.csproj",
+        "${workspaceFolder}/Catalog.API/Catalog.API.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
@@ -47,14 +47,14 @@
       "label": "docker-build: debug",
       "dependsOn": ["build"],
       "dockerBuild": {
-        "tag": "dotnetcatalog:dev",
+        "tag": "Catalog.API:dev",
         "target": "base",
-        "dockerfile": "${workspaceFolder}/Dockerfile",
+        "dockerfile": "${workspaceFolder}/Catalog.API/Dockerfile",
         "context": "${workspaceFolder}",
         "pull": true
       },
       "netCore": {
-        "appProject": "${workspaceFolder}/dotnet-catalog.csproj"
+        "appProject": "${workspaceFolder}/Catalog.API/Catalog.API.csproj"
       }
     },
     {
@@ -62,13 +62,13 @@
       "label": "docker-build: release",
       "dependsOn": ["build"],
       "dockerBuild": {
-        "tag": "dotnetcatalog:latest",
-        "dockerfile": "${workspaceFolder}/Dockerfile",
+        "tag": "Catalog.API:latest",
+        "dockerfile": "${workspaceFolder}/Catalog.API/Dockerfile",
         "context": "${workspaceFolder}",
         "pull": true
       },
       "netCore": {
-        "appProject": "${workspaceFolder}/dotnet-catalog.csproj"
+        "appProject": "${workspaceFolder}/Catalog.API/Catalog.API.csproj"
       }
     },
     {
@@ -77,7 +77,7 @@
       "dependsOn": ["docker-build: debug"],
       "dockerRun": {},
       "netCore": {
-        "appProject": "${workspaceFolder}/dotnet-catalog.csproj",
+        "appProject": "${workspaceFolder}/Catalog.API/Catalog.API.csproj",
         "enableDebugging": true,
         "configureSsl": false
       }
@@ -88,7 +88,7 @@
       "dependsOn": ["docker-build: release"],
       "dockerRun": {},
       "netCore": {
-        "appProject": "${workspaceFolder}/dotnet-catalog.csproj"
+        "appProject": "${workspaceFolder}/Catalog.API/Catalog.API.csproj"
       }
     }
   ]

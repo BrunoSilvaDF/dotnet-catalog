@@ -1,6 +1,6 @@
 using System;
 
-namespace DotnetCatalog.Dtos
+namespace Catalog.API.Dtos
 {
   // DTO => Data Transfer Object
   //  the "contract" that is exposed on API, consumed by the client

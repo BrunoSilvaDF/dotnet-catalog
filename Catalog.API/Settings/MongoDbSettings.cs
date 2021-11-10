@@ -1,4 +1,4 @@
-namespace DotnetCatalog.Settings
+namespace Catalog.API.Settings
 {
   public class MongoDbSettings
   {

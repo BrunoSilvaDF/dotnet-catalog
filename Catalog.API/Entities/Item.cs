@@ -1,6 +1,6 @@
 using System;
 
-namespace DotnetCatalog.Entitites
+namespace Catalog.API.Entitites
 {
   // Record Types
   //  * use for immutable objects

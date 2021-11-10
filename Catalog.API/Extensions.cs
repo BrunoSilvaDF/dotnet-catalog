@@ -1,7 +1,7 @@
-using DotnetCatalog.Dtos;
-using DotnetCatalog.Entitites;
+using Catalog.API.Dtos;
+using Catalog.API.Entitites;
 
-namespace DotnetCatalog
+namespace Catalog.API
 {
   public static class Extensions
   {
