@@ -1,18 +1,21 @@
-# Course Status
+# Tutorial para criação de API .NET 5
 
-https://youtu.be/ZXdFisA_hOY?t=21204
+Link: https://youtu.be/ZXdFisA_hOY
 
 ### Tips
 
 `dotnet new webapi -n Catalog`:: criando o projeto
+`dotnet build` :: builda o projeto
+`dotnet run` :: roda o projeto
 
 `dotnet dev-certs https --trust` :: adiciona certificado https
 `dotnet user-secrets init` :: inicia o .NET SecretManager, criando um Id no .csproj
+`dotnet user-secrets set MongoDbSettings:Password Pass#word` :: adiciona o segredo ao .NET SecretManager
 
 `docker build -t brunoosilva/catalog:v2 .` docker build image
 
-`kubectl config current-context` :: config kubernetes
 `kubectl create secret generic catalog-secrets --from-literal=mongodb-password=Pass#word` :: create secret
+`kubectl config current-context` :: config kubernetes
 `kubectl apply -f .\catalog.yaml`:: create kubernetes for api
 `kubectl apply -f .\mongodb.yaml` :: create kubernetes for db
 `kubectl get deployments` :: get kubernetes
@@ -30,12 +33,10 @@ xUnit
 `dotnet add package Microsoft.Extensions.Loggin.Abstractions` abstrai a parte de log
 `dotnet add package moq` pacote para mock
 `dotnet test` executa os testes
-extensão .net core test explorer para visualizar melhor os testes
+
+extensão .NET CORE TEST EXPLORER :: para visualizar melhor os testes
+
 `dotnet add package FluentAssertions` lib para fazer os asserts de forma mais inteligente :)
-
-### SecretManager
-
-`dotnet user-secrets set MongoDbSettings:Password Pass#word` :: adiciona o segredo ao .NET SecretManager
 
 ### Health Checks
 
