@@ -13,7 +13,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: Pass#word
   api:
     container_name: api-container
-    build: ./Catalog.API
+    # build: ./Catalog.API
+    image: brunoosilva/catalog:v3
     ports:
       - '4000:80'
     links:
