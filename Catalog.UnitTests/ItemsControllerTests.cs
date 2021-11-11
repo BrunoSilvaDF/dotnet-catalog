@@ -59,10 +59,8 @@ namespace Catalog.UnitTests
       // Assert.Equal(expectedItem.CreatedAt, dto.CreatedAt);
 
       // FluentAssertions lib
-      //  quando usamos record (ao invés de class), esse sobrescreve o método Equals
-      //  por isso precisamos passar o 2ndo param, para focar nas propriedades e não no Obj
       result.Value.Should()
-        .BeEquivalentTo(expectedItem, options => options.ComparingByMembers<Item>());
+        .BeEquivalentTo(expectedItem);
     }
 
     [Fact]
@@ -79,19 +77,18 @@ namespace Catalog.UnitTests
       var actualItems = await controller.GetItemsAsync();
 
       // Assert
-      actualItems.Should()
-        .BeEquivalentTo(expectedItems, options => options.ComparingByMembers<Item>());
+      actualItems.Should().BeEquivalentTo(expectedItems);
     }
 
     [Fact]
     public async Task CreateItemsAsync_WithItemToCreate_ReturnsCreatedItem()
     {
       // Arrange
-      var itemToCreate = new CreateItemDto()
-      {
-        Name = Guid.NewGuid().ToString(),
-        Price = rand.Next(1000)
-      };
+      var itemToCreate = new CreateItemDto(
+        Guid.NewGuid().ToString(),
+        Guid.NewGuid().ToString(),
+        rand.Next(1000)
+      );
 
       var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
 
@@ -119,11 +116,11 @@ namespace Catalog.UnitTests
         .ReturnsAsync(existingItem);
 
       var itemId = existingItem.Id;
-      var itemToUpdate = new UpdateItemDto()
-      {
-        Name = Guid.NewGuid().ToString(),
-        Price = existingItem.Price + 3
-      };
+      var itemToUpdate = new UpdateItemDto(
+        Guid.NewGuid().ToString(),
+        Guid.NewGuid().ToString(),
+        existingItem.Price + 3
+      );
 
       var controller = new ItemsController(repositoryStub.Object, loggerStub.Object);
 

@@ -61,6 +61,7 @@ namespace Catalog.API.Controllers
       {
         Id = Guid.NewGuid(),
         Name = itemDto.Name,
+        Description = itemDto.Description,
         Price = itemDto.Price,
         CreatedAt = DateTimeOffset.UtcNow
       };
@@ -85,15 +86,10 @@ namespace Catalog.API.Controllers
         return NotFound();
       }
 
-      // record type with-expression
-      // preserva mutabilidade
-      Item updatedItem = existingItem with
-      {
-        Name = itemDto.Name,
-        Price = itemDto.Price
-      };
+      existingItem.Name = itemDto.Name;
+      existingItem.Price = itemDto.Price;
 
-      await repository.UpdateItemAsync(updatedItem);
+      await repository.UpdateItemAsync(existingItem);
 
       // Convenção => retornar NoContent (204)
       return NoContent();

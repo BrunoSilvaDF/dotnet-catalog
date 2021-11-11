@@ -10,14 +10,17 @@ namespace Catalog.API.Entitites
   //      Item potion1 = new() { Name = "Potion", Price = 9 }
   //      Item potion2 = new() { Name = "Potion", Price = 9 }
   //      bool areEqual = potion1 == potion2; // = true
+  // 
+  // public string Nome { get; init; }
+  // init => init-only properties => can't modify after init
+  // private set => can define only using a constructor
 
-  public record Item
+  public class Item
   {
-    // init => init-only properties => can't modify after init
-    // private set => can define only using a constructor
-    public Guid Id { get; init; }
-    public string Name { get; init; }
-    public decimal Price { get; init; }
-    public DateTimeOffset CreatedAt { get; init; }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public decimal Price { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
   }
 }
