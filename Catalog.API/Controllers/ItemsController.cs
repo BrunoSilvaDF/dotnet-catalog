@@ -24,7 +24,7 @@ namespace Catalog.API.Controllers
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ItemDto>> GetItemsAsync()
+    public async Task<IEnumerable<ItemDto>> GetItemsAsync(string nameToMatch = null)
     {
       // before extension method
       // return repository.GetItems().Select(item => new ItemDto
@@ -35,6 +35,11 @@ namespace Catalog.API.Controllers
       //   CreatedAt = item.CreatedAt
       // });
       var items = (await repository.GetItemsAsync()).Select(item => item.AsDto());
+
+      if (!string.IsNullOrWhiteSpace(nameToMatch))
+      {
+        items = items.Where(item => item.Name.Contains(nameToMatch, StringComparison.OrdinalIgnoreCase));
+      }
 
       logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {items.Count()} items");
 
