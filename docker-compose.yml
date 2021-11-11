@@ -14,9 +14,9 @@ services:
   api:
     container_name: api-container
     # build: ./Catalog.API
-    image: brunoosilva/catalog:v3
+    image: brunoosilva/catalog
     ports:
-      - '4000:80'
+      - '5000:80'
     links:
       - mongodb
     environment:
