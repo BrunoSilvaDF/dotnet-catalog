@@ -1,20 +1,23 @@
-# Tutorial para criação de API .NET 5
+# .NET 5 Rest API Tutorial
 
-Link: https://youtu.be/ZXdFisA_hOY
+Source: https://youtu.be/ZXdFisA_hOY
 
-### Tips
+### Tips/Commands
 
-`dotnet new webapi -n Catalog`:: criando o projeto
-`dotnet build` :: builda o projeto
-`dotnet run` :: roda o projeto
+`dotnet new webapi -n Catalog`:: create project
 
-`dotnet dev-certs https --trust` :: adiciona certificado https
-`dotnet user-secrets init` :: inicia o .NET SecretManager, criando um Id no .csproj
-`dotnet user-secrets set MongoDbSettings:Password Pass#word` :: adiciona o segredo ao .NET SecretManager
+`dotnet build` :: project build
+
+`dotnet run` :: running
+
+`dotnet dev-certs https --trust` :: add https certificate
+
+`dotnet user-secrets init` :: init .NET SecretManager
+`dotnet user-secrets set MongoDbSettings:Password Pass#word` :: add .NET SecretManager key/secret
 
 `docker build -t brunoosilva/catalog:v2 .` docker build image
 
-`kubectl create secret generic catalog-secrets --from-literal=mongodb-password=Pass#word` :: create secret
+`kubectl create secret generic catalog-secrets --from-literal=mongodb-password=Pass#word` :: create kubernetes secret
 `kubectl config current-context` :: config kubernetes
 `kubectl apply -f .\catalog.yaml`:: create kubernetes for api
 `kubectl apply -f .\mongodb.yaml` :: create kubernetes for db
@@ -28,20 +31,18 @@ Link: https://youtu.be/ZXdFisA_hOY
 ### Unit Tests
 
 xUnit
-`dotnet new xunit -n Catalog.UnitTests` :: criando o projeto de teste
-`dotnet add reference ..\Catalog.API\Catalog.API.csproj` adiciona ref do projeto ao teste
-`dotnet add package Microsoft.Extensions.Loggin.Abstractions` abstrai a parte de log
-`dotnet add package moq` pacote para mock
-`dotnet test` executa os testes
+`dotnet new xunit -n Catalog.UnitTests` :: create unit test project
+`dotnet add reference ..\Catalog.API\Catalog.API.csproj` add prod project reference
+`dotnet add package Microsoft.Extensions.Loggin.Abstractions` add log abstraction
+`dotnet add package moq` add mock package
+`dotnet test` run the tests
 
-extensão .NET CORE TEST EXPLORER :: para visualizar melhor os testes
+aldo add .NET CORE TEST EXPLORER vscode extension
 
-`dotnet add package FluentAssertions` lib para fazer os asserts de forma mais inteligente :)
+`dotnet add package FluentAssertions` cool assertion lib
 
 ### Health Checks
 
 https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
 
-=> a chave é o nome que estiver no appsettings
-
-`dotnet add package AspNetCore.HealthChecks.MongoDb` :: adiciona o Health Check do MongoDB
+`dotnet add package AspNetCore.HealthChecks.MongoDb` :: add Health Checks to MongoDB
