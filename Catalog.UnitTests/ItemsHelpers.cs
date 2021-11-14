@@ -1,4 +1,5 @@
 using System;
+using Catalog.API.Dtos;
 using Catalog.API.Entitites;
 
 namespace Catalog.UnitTests
@@ -20,6 +21,24 @@ namespace Catalog.UnitTests
     public static Item[] CreateRandomItems()
     {
       return new[] { CreateRandomItem(), CreateRandomItem(), CreateRandomItem(), };
+    }
+
+    public static ItemDto CreateRandomItemDto()
+    {
+      Random rand = new();
+      return new ItemDto(Guid.NewGuid(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), rand.Next(1000), DateTimeOffset.UtcNow);
+    }
+
+    public static CreateItemDto CreateRandomCreateItemDto()
+    {
+      Random rand = new();
+      return new CreateItemDto(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), rand.Next(1000));
+    }
+
+    public static UpdateItemDto CreateRandomUpdateItemDto()
+    {
+      Random rand = new();
+      return new UpdateItemDto(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), rand.Next(1000));
     }
   }
 }

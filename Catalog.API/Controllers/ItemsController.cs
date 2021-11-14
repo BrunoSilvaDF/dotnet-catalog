@@ -53,6 +53,10 @@ namespace Catalog.API.Controllers
     {
       var item = await service.CreateItemAsync(itemDto.Name, itemDto.Description, itemDto.Price);
 
+      if (item is null)
+      {
+        return BadRequest();
+      }
       // Convenção
       //  => retornar Created (201)
       //  => retornar um header com a localização na api do retorno
