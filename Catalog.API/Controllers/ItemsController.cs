@@ -22,11 +22,16 @@ namespace Catalog.API.Controllers
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ItemDto>> GetItemsAsync(string nameToMatch = null)
+    public async Task<ActionResult<IEnumerable<ItemDto>>> GetItemsAsync(string nameToMatch = null)
     {
       var items = (await service.GetItemsAsync(nameToMatch)).Select(item => item.AsDto());
 
-      return items;
+      if (items.IsEmpty())
+      {
+        return NoContent();
+      }
+
+      return Ok(items);
     }
 
     [HttpGet("{id}")]
@@ -34,7 +39,8 @@ namespace Catalog.API.Controllers
     {
       try
       {
-        return (await service.GetItemAsync(id)).AsDto();
+        var item = (await service.GetItemAsync(id)).AsDto();
+        return Ok(item);
       }
       catch (System.Exception)
       {

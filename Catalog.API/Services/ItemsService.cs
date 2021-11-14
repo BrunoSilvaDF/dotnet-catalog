@@ -12,9 +12,9 @@ namespace Catalog.API.Services
   public class ItemsService : IItemsService
   {
     private readonly IItemsRepository repository;
-    private readonly ILogger<ItemsService> logger;
+    private readonly ILogger<IItemsService> logger;
 
-    public ItemsService(IItemsRepository repository, ILogger<ItemsService> logger)
+    public ItemsService(IItemsRepository repository, ILogger<IItemsService> logger)
     {
       this.repository = repository;
       this.logger = logger;
@@ -48,9 +48,9 @@ namespace Catalog.API.Services
       await repository.DeleteItemAsync(id);
     }
 
-    public Task<Item> GetItemAsync(Guid id)
+    public async Task<Item> GetItemAsync(Guid id)
     {
-      var item = repository.GetItemAsync(id);
+      var item = await repository.GetItemAsync(id);
 
       if (item is null)
       {
@@ -60,7 +60,7 @@ namespace Catalog.API.Services
       return item;
     }
 
-    public async Task<IEnumerable<Item>> GetItemsAsync(string nameToMatch)
+    public async Task<IEnumerable<Item>> GetItemsAsync(string nameToMatch = null)
     {
       var items = await repository.GetItemsAsync();
 
@@ -74,7 +74,7 @@ namespace Catalog.API.Services
       return items;
     }
 
-    public async Task UpdateItemAsync(Guid id, string name, string description, decimal price)
+    public async Task<Item> UpdateItemAsync(Guid id, string name, string description, decimal price)
     {
       var existingItem = await repository.GetItemAsync(id);
 
@@ -83,11 +83,17 @@ namespace Catalog.API.Services
         throw new ItemNotFoundException("item not found");
       }
 
-      existingItem.Name = name;
-      existingItem.Description = description;
-      existingItem.Price = price;
+      Item updatedItem = new()
+      {
+        Id = existingItem.Id,
+        Name = name,
+        Description = description,
+        Price = price
+      };
 
-      await repository.UpdateItemAsync(existingItem);
+      await repository.UpdateItemAsync(updatedItem);
+
+      return updatedItem;
     }
   }
 }

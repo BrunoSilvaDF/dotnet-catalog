@@ -10,7 +10,7 @@ namespace Catalog.API.Services
     Task<Item> GetItemAsync(Guid id);
     Task<IEnumerable<Item>> GetItemsAsync(string nameToMatch);
     Task<Item> CreateItemAsync(string name, string description, decimal price);
-    Task UpdateItemAsync(Guid id, string name, string description, decimal price);
+    Task<Item> UpdateItemAsync(Guid id, string name, string description, decimal price);
     Task DeleteItemAsync(Guid id);
   }
 }
