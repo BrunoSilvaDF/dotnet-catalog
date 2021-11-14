@@ -15,7 +15,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
-namespace Catalog.API
+namespace Catalog.API.Helpers
 {
   public static class StartupHelper
   {

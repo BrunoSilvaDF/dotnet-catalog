@@ -1,7 +1,7 @@
 using Catalog.API.Dtos;
 using Catalog.API.Entitites;
 
-namespace Catalog.API
+namespace Catalog.API.Extensions
 {
   public static class Extensions
   {
