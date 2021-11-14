@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text.Json;
 using Catalog.API.Repositories;
+using Catalog.API.Services;
 using Catalog.API.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -50,6 +51,7 @@ namespace Catalog.API.Helpers
 
       // injetando o repo
       services.AddSingleton<IItemsRepository, MongoDbItemsRepository>();
+      services.AddSingleton<IItemsService, ItemsService>();
 
       return services;
     }

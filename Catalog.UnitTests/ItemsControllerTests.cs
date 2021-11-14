@@ -5,6 +5,7 @@ using Catalog.API.Controllers;
 using Catalog.API.Dtos;
 using Catalog.API.Entitites;
 using Catalog.API.Repositories;
+using Catalog.API.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ namespace Catalog.UnitTests
   public class ItemsControllerTests
   {
     private readonly Mock<IItemsRepository> repositoryStub = new();
+    private readonly Mock<IItemsService> serviceStub = new();
     private readonly Mock<ILogger<ItemsController>> loggerStub = new();
     private readonly Random rand = new();
 

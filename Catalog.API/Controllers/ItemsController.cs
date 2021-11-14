@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Catalog.API.Dtos;
-using Catalog.API.Entitites;
+using Catalog.API.Exceptions;
 using Catalog.API.Extensions;
-using Catalog.API.Repositories;
+using Catalog.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Catalog.API.Controllers
 {
@@ -15,34 +14,17 @@ namespace Catalog.API.Controllers
   [Route("[controller]")]
   public class ItemsController : ControllerBase
   {
-    private readonly IItemsRepository repository;
-    private readonly ILogger<ItemsController> logger;
+    private readonly IItemsService service;
 
-    public ItemsController(IItemsRepository repository, ILogger<ItemsController> logger)
+    public ItemsController(IItemsService service)
     {
-      this.repository = repository;
-      this.logger = logger;
+      this.service = service;
     }
 
     [HttpGet]
     public async Task<IEnumerable<ItemDto>> GetItemsAsync(string nameToMatch = null)
     {
-      // before extension method
-      // return repository.GetItems().Select(item => new ItemDto
-      // {
-      //   Id = item.Id,
-      //   Name = item.Name,
-      //   Price = item.Price,
-      //   CreatedAt = item.CreatedAt
-      // });
-      var items = (await repository.GetItemsAsync()).Select(item => item.AsDto());
-
-      if (!string.IsNullOrWhiteSpace(nameToMatch))
-      {
-        items = items.Where(item => item.Name.Contains(nameToMatch, StringComparison.OrdinalIgnoreCase));
-      }
-
-      logger.LogInformation($"{DateTime.UtcNow.ToString("hh:mm:ss")}: Retrieved {items.Count()} items");
+      var items = (await service.GetItemsAsync(nameToMatch)).Select(item => item.AsDto());
 
       return items;
     }
@@ -50,29 +32,20 @@ namespace Catalog.API.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<ItemDto>> GetItemAsync(Guid id)
     {
-      var item = await repository.GetItemAsync(id);
-
-      if (item is null)
+      try
+      {
+        return (await service.GetItemAsync(id)).AsDto();
+      }
+      catch (System.Exception)
       {
         return NotFound();
       }
-
-      return item.AsDto();
     }
 
     [HttpPost]
     public async Task<ActionResult<ItemDto>> CreateItemAsync(CreateItemDto itemDto)
     {
-      Item item = new()
-      {
-        Id = Guid.NewGuid(),
-        Name = itemDto.Name,
-        Description = itemDto.Description,
-        Price = itemDto.Price,
-        CreatedAt = DateTimeOffset.UtcNow
-      };
-
-      await repository.CreateItemAsync(item);
+      var item = await service.CreateItemAsync(itemDto.Name, itemDto.Description, itemDto.Price);
 
       // Convenção
       //  => retornar Created (201)
@@ -85,36 +58,31 @@ namespace Catalog.API.Controllers
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateItemAsync(Guid id, UpdateItemDto itemDto)
     {
-      var existingItem = await repository.GetItemAsync(id);
-
-      if (existingItem is null)
+      try
       {
-        return NotFound();
+        await service.UpdateItemAsync(id, itemDto.Name, itemDto.Description, itemDto.Price);
+        // Convenção => retornar NoContent (204)
+        return NoContent();
       }
-
-      existingItem.Name = itemDto.Name;
-      existingItem.Price = itemDto.Price;
-
-      await repository.UpdateItemAsync(existingItem);
-
-      // Convenção => retornar NoContent (204)
-      return NoContent();
+      catch (ItemNotFoundException ex)
+      {
+        return NotFound(ex.Message);
+      }
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteItemAsync(Guid id)
     {
-      var existingItem = repository.GetItemAsync(id);
-
-      if (existingItem is null)
+      try
       {
-        return NotFound();
+        await service.DeleteItemAsync(id);
+        // Convenção => retornar NoContent (204)
+        return NoContent();
       }
-
-      await repository.DeleteItemAsync(id);
-
-      // Convenção => retornar NoContent (204)
-      return NoContent();
+      catch (ItemNotFoundException ex)
+      {
+        return NotFound(ex.Message);
+      }
     }
   }
 }
